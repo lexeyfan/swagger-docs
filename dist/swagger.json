@@ -1,0 +1,204 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API для работы с маркируемыми и выдаваемыми СЗР",
+    "version": "1.0.0",
+    "description": "API для взаимодействия 1С с сервером, а также мобильным приложением."
+  },
+  "servers": [
+    {
+      "url": "http://iot.proton-group.ru:1880",
+      "description": "Основной сервер API"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "DocumentUpload": {
+        "type": "object"
+      },
+      "DocumentAccept": {
+        "type": "object"
+      },
+      "Data1CResponse": {
+        "type": "object"
+      },
+      "MarkedData": {
+        "type": "object"
+      }
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": []
+    }
+  ],
+  "paths": {
+    "/upload_data": {
+      "post": {
+        "summary": "Загрузка маркируемых СЗР из 1С",
+        "description": "Принимает данные из 1С для дальнейшей обработки мобильным приложением.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentUpload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Данные успешно загружены"
+          }
+        }
+      }
+    },
+    "/upload_data_accept": {
+      "post": {
+        "summary": "Загрузка выдаваемых СЗР из 1С",
+        "description": "Принимает данные из 1С для обработки мобильным приложением.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentAccept"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Данные успешно загружены"
+          }
+        }
+      }
+    },
+    "/get_data_1c": {
+      "get": {
+        "summary": "Получение данных из сервера в 1С",
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Data1CResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/set_data_1c": {
+      "get": {
+        "summary": "Подтверждение получения записей 1С",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Идентификатор записи"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Подтверждено"
+          }
+        }
+      }
+    },
+    "/download_data_doc": {
+      "get": {
+        "summary": "Получение документов для маркировки",
+        "parameters": [
+          {
+            "name": "sklad",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Код склада (опционально)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список документов"
+          }
+        }
+      }
+    },
+    "/download_data": {
+      "get": {
+        "summary": "Получение СЗР из документа",
+        "parameters": [
+          {
+            "name": "part",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "GUID документа"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список СЗР"
+          }
+        }
+      }
+    },
+    "/send_data": {
+      "post": {
+        "summary": "Отправка отмаркированных СЗР",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkedData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "UID запроса подтвержден"
+          }
+        }
+      }
+    },
+    "/send_data_priemka": {
+      "post": {
+        "summary": "Отправка выданных СЗР на сервер",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkedData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "UID запроса подтвержден"
+          }
+        }
+      }
+    }
+  }
+}
