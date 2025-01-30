@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://iot.proton-group.ru:1880",
+      "url": "http://iot.agatgroup.com:1880",
       "description": "Основной сервер API"
     }
   ],
