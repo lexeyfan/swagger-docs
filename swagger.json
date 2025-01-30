@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://iot.agatgroup.com:1880",
+      "url": "https://apps.proyagodu.ru:5555",
       "description": "Основной сервер API"
     }
   ],
